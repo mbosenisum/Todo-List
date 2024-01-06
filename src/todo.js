@@ -24,18 +24,31 @@ function Todo(title, description, dueDate, priority, notes, checklist) {
 //     // }
 // }
 
+// put in function to make as a private variable
+// global for now (testing)
+let allProjects = [];
+
 // as factory function
 function Project(newTodo) {
     let todos = [];
 
     todos.push(newTodo);
+    allProjects.push(newTodo)
 
     // not sure if 'function' is needed or not
     const addTodo = (newTodo) => {
         todos.push(newTodo);
+        // allProjects.push(newTodo)
     }
 
-    return{ todos, addTodo };
+    const showTodos = () => {
+        // for(let todo in todos){
+        //     return todo;
+        // }
+        return todos;
+    }
+
+    return { todos, addTodo, showTodos };
 }
 
 // function Project(newTodo){
@@ -52,7 +65,38 @@ const groceries2 = Todo("groceries2", "lettuce", "01/05/2023", "high", "use coup
 
 // let groceries
 // let groceriesproject = Project(groceries);
-let groceriesproject = Project (groceries);
+let groceriesproject = Project(groceries);
 
 groceriesproject.addTodo(groceries2);
-console.log(groceriesproject.todos);
+// console.log(groceriesproject.todos);
+
+// second project to test DisplayProjects
+const bills = Todo("bills", "utility", "01/06/2023", "high", "pay by phone", "a, b");
+const bills2 = Todo("bills", "rent", "01/06/2023", "high", "pay by phone", "a, b");
+
+let billsproject = Project(bills);
+billsproject.addTodo(bills2);
+
+// insert function to print to DOM
+let content = document.getElementsByClassName('content');
+
+function displayProjects() {
+    for(let project in allProjects){
+        console.log(allProjects[project]);
+        // print to DOM
+    }
+}
+
+let displayProjs = document.getElementById('displayProjects');
+
+displayProjs.addEventListener('click', displayProjects);
+
+// displayProjs.addEventListener('click', () => {
+//     // displayProjects()
+//     console.log('clicked');
+//     for (let project in allProjects) {
+//         console.log('project');
+//         console.log(project);
+//         // console.log(project.showTodos());
+//     }
+// });
