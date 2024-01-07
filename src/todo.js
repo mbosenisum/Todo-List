@@ -1,6 +1,5 @@
 // https://www.theodinproject.com/lessons/node-path-javascript-factory-functions-and-the-module-pattern
 
-// item
 function Todo(title, description, dueDate, priority, notes, checklist) {
     this.title = title;
     this.description = description;
@@ -11,33 +10,36 @@ function Todo(title, description, dueDate, priority, notes, checklist) {
     return { title, description, dueDate, priority, notes, checklist }
 }
 
-// contains multiple Todos
-// do as class constructor?
-// need to create way to add multiple todos for project, using objects of arrays?
-// class Project {
-//     constructor(Todo) {
-//         let todos = [];
-//         todos.push(Todo);
-//     }
-//     // get allTodos() {
-//     //     return todos;
-//     // }
-// }
+// make a private variable
+// allProjects = [];
+function projectGroup (newProject) {
+    let arr = [];
 
-// put in function to make as a private variable
-// global for now (testing)
-let allProjects = [];
+    const add = (newProject) => {
+        arr.push(newProject);
+        return;
+    }
+
+    const display = () => {
+        return arr;
+    }
+
+    return { add, display };
+}
+
+let allProjects = projectGroup();
 
 // as factory function
 function Project(newTodo) {
     let todos = [];
 
     todos.push(newTodo);
-    allProjects.push(newTodo)
+    allProjects.add(newTodo);
 
     // not sure if 'function' is needed or not
     const addTodo = (newTodo) => {
         todos.push(newTodo);
+        return;
         // allProjects.push(newTodo)
     }
 
@@ -50,12 +52,6 @@ function Project(newTodo) {
 
     return { todos, addTodo, showTodos };
 }
-
-// function Project(newTodo){
-//     let todos = [];
-
-//     addTodo
-// }
 
 
 const groceries = Todo("groceries", "butter, milk, eggs", "01/05/2023", "high", "use coupons", "a, b");
@@ -81,22 +77,13 @@ billsproject.addTodo(bills2);
 let content = document.getElementsByClassName('content');
 
 function displayProjects() {
-    for(let project in allProjects){
-        console.log(allProjects[project]);
-        // print to DOM
-    }
+    console.log(allProjects.display());
+    // for(let project in allProjects){
+    //     console.log(allProjects.display());
+    //     // print to DOM
+    // }
 }
 
 let displayProjs = document.getElementById('displayProjects');
 
 displayProjs.addEventListener('click', displayProjects);
-
-// displayProjs.addEventListener('click', () => {
-//     // displayProjects()
-//     console.log('clicked');
-//     for (let project in allProjects) {
-//         console.log('project');
-//         console.log(project);
-//         // console.log(project.showTodos());
-//     }
-// });
