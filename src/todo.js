@@ -18,7 +18,7 @@ function Todo(title, description, dueDate, priority, notes, checklist) {
     return { title, description, dueDate, priority, notes, checklist }
 }
 
-function projectGroup (newProject) {
+function projectGroup(newProject) {
     let projectArr = [];
 
     const add = (newProject) => {
@@ -26,9 +26,13 @@ function projectGroup (newProject) {
         return;
     }
 
+    const getProjects = () => {
+        return projectArr;
+    }
+
     // change later
     const display = () => {
-        for(let index in projectArr){
+        for (let index in projectArr) {
             console.log('project title = ' + projectArr[index].title());
             console.log(projectArr[index]);
             // console.log(arr[index].showTodos());
@@ -37,8 +41,8 @@ function projectGroup (newProject) {
     }
 
     const find = (project) => {
-        for(let index in projectArr){
-            if(projectArr[index].title() == project){
+        for (let index in projectArr) {
+            if (projectArr[index].title() == project) {
                 return index;
             }
         }
@@ -50,7 +54,7 @@ function projectGroup (newProject) {
         projectArr.splice(index, 1);
     }
 
-    return { add, display, find, remove };
+    return { add, display, find, remove, getProjects };
 }
 
 let allProjects = projectGroup();
@@ -72,16 +76,20 @@ function Project(newTodo, titleName) {
 
     // just returns todos
     const showTodos = () => {
-        for(let index in todos){
+        for (let index in todos) {
             console.log(todos[index]);
             // print to DOM
         }
         // return todos;
     }
 
+    const getTodos = () => {
+        return todos;
+    }
+
     const findTodo = (newTodo) => {
-        for(let index in todos){
-            if(todos[index] == newTodo){
+        for (let index in todos) {
+            if (todos[index] == newTodo) {
                 console.log('todos match');
                 return index;
             }
@@ -95,7 +103,7 @@ function Project(newTodo, titleName) {
         return;
     }
 
-    return { todos, addTodo, showTodos, removeTodo, findTodo, title };
+    return { todos, addTodo, showTodos, removeTodo, findTodo, title, getTodos };
 }
 
 
@@ -141,11 +149,68 @@ displayProjs.addEventListener('click', displayProjects);
 // perhaps splice(index, 1) is not done correctly 
 // in both delete functions
 
-console.log('all projects');
-allProjects.display();
+// testing removeProject
+// console.log('all projects');
+// allProjects.display();
 
-console.log('remove bills');
-allProjects.remove('bills');
+// console.log('remove bills');
+// allProjects.remove('bills');
 
-console.log('new projects');
-allProjects.display();
+// console.log('new projects');
+// allProjects.display();
+
+// works with todos
+
+// rename as printTodo?
+
+
+function printTodo(data) {
+    let output = document.getElementById('output');
+
+    let tbody = document.getElementsByTagName('tbody');
+
+    let tr = document.createElement('tr');
+
+    let outputrow = document.getElementById('outputrow');
+    // let td = document.createElement('td');
+        for (let index in data) {
+            let td = document.createElement('td');
+            td.textContent = data[index];
+            tr.appendChild(td);
+        }
+
+    outputrow.appendChild(tr);
+    // tr.appendChild('\n');
+    // add new row if function is called again
+
+    tbody[0].appendChild(tr);
+
+    return;
+}
+
+function printProject(project){
+    for(todo in project.getTodos()){
+        printTodo(project.getTodos()[todo]);
+    }
+    return;
+}
+
+// todo (these are public variables in the code, not being accessed from getter)
+// printToDOM(groceries2);
+// printToDOM(bills2);
+
+// let groceriestodos = groceriesproject.getTodos();
+// printTodo(groceriestodos[0]);
+// printProject(groceriesproject);
+
+function printAllProjects() {
+    for(let index in allProjects.getProjects()){
+        printProject(allProjects.getProjects()[index]);
+    }
+    return;
+}
+
+printAllProjects();
+// trying Projects now
+
+// printToDOM(groceriesproject);   // prints the
