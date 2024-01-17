@@ -2,9 +2,11 @@
 
 // current: 
 // tie all functionality to DOM
+// DOM interactivity (add/remove buttons)
 // extra individual todos (within each project) after viewing all 
 // expand a single todo to see/edit its deatils
 // -- localStorage
+// delete a todo / project
 
 
 
@@ -131,37 +133,7 @@ let content = document.getElementsByClassName('content');
 
 function displayProjects() {
     console.log(allProjects.display());
-    // for(let project in allProjects){
-    //     console.log(allProjects.display());
-    //     // print to DOM
-    // }
 }
-
-let displayProjs = document.getElementById('displayProjects');
-
-displayProjs.addEventListener('click', displayProjects);
-
-
-// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
-// splice() return value: if only one element is removed, 
-// an array of one element is returned
-
-// perhaps splice(index, 1) is not done correctly 
-// in both delete functions
-
-// testing removeProject
-// console.log('all projects');
-// allProjects.display();
-
-// console.log('remove bills');
-// allProjects.remove('bills');
-
-// console.log('new projects');
-// allProjects.display();
-
-// works with todos
-
-// rename as printTodo?
 
 
 function printTodo(data) {
@@ -172,7 +144,6 @@ function printTodo(data) {
     let tr = document.createElement('tr');
 
     let outputrow = document.getElementById('outputrow');
-    // let td = document.createElement('td');
         for (let index in data) {
             let td = document.createElement('td');
             td.textContent = data[index];
@@ -180,9 +151,6 @@ function printTodo(data) {
         }
 
     outputrow.appendChild(tr);
-    // tr.appendChild('\n');
-    // add new row if function is called again
-
     tbody[0].appendChild(tr);
 
     return;
@@ -195,14 +163,6 @@ function printProject(project){
     return;
 }
 
-// todo (these are public variables in the code, not being accessed from getter)
-// printToDOM(groceries2);
-// printToDOM(bills2);
-
-// let groceriestodos = groceriesproject.getTodos();
-// printTodo(groceriestodos[0]);
-// printProject(groceriesproject);
-
 function printAllProjects() {
     for(let index in allProjects.getProjects()){
         printProject(allProjects.getProjects()[index]);
@@ -210,7 +170,28 @@ function printAllProjects() {
     return;
 }
 
-printAllProjects();
-// trying Projects now
 
-// printToDOM(groceriesproject);   // prints the
+
+let displayProjs = document.getElementById('displayProjects');
+
+displayProjs.addEventListener('click', printAllProjects);
+
+function clearTable(){
+    let table = document.getElementsByTagName('tbody');
+    table[0].remove();
+
+    let thead = document.getElementsByTagName('thead')
+    let tbody = document.createElement('tbody');
+
+    thead[0].after(tbody);
+    let outputrow = document.createElement('tr');
+    outputrow.setAttribute('id', 'outputrow')
+
+    tbody.appendChild(outputrow);
+
+    return;
+}
+
+let clearDoc = document.getElementById('clearDoc');
+
+clearDoc.addEventListener('click', clearTable);
