@@ -7,6 +7,7 @@
 // expand a single todo to see/edit its deatils
 // -- localStorage
 // delete a todo / project
+// each project is grouped separately
 
 
 
@@ -54,6 +55,8 @@ function projectGroup(newProject) {
     const remove = (project) => {
         let index = find(project);
         projectArr.splice(index, 1);
+
+        // need to remove accompanying Todos as well
     }
 
     return { add, display, find, remove, getProjects };
@@ -101,7 +104,13 @@ function Project(newTodo, titleName) {
 
     const removeTodo = (newTodo) => {
         let index = findTodo(newTodo);
-        todos = todos.splice(index, 1);
+        // can't delete last / if only one Todo in project
+        if (todos.length > 1) {
+            todos = todos.splice(index, 1);
+        }
+        else {
+            todos = [];
+        }
         return;
     }
 
@@ -136,7 +145,11 @@ function displayProjects() {
 }
 
 
-function printTodo(data) {
+// deleteTodoButton.addEventListener('click', removeTodo);
+// https://stackoverflow.com/questions/16310423/addeventlistener-calls-the-function-without-me-even-asking-it-to
+
+function printTodo(data, project) {
+    // console.log('data.super)() = ' + data.super());
     let output = document.getElementById('output');
 
     let tbody = document.getElementsByTagName('tbody');
@@ -144,28 +157,87 @@ function printTodo(data) {
     let tr = document.createElement('tr');
 
     let outputrow = document.getElementById('outputrow');
-        for (let index in data) {
-            let td = document.createElement('td');
-            td.textContent = data[index];
-            tr.appendChild(td);
-        }
+    for (let index in data) {
+        let td = document.createElement('td');
+        td.textContent = data[index];
+        tr.appendChild(td);
+    }
 
-    outputrow.appendChild(tr);
-    tbody[0].appendChild(tr);
+    let flag = 1;
+    // deletes second groceries todo without being clicked
+    let deleteTodoButton = document.createElement('button');
+    deleteTodoButton.textContent = 'delete';
+    tr.appendChild(deleteTodoButton);
+    deleteTodoButton.addEventListener('click', function () {
+        project.removeTodo(data);
+        // should rerun printTodo but avoviding repeated outputrow and tbody[0] appends
+        flag = 0;
+        clearTable();
+        // printTodo(data, project);
+        printAllProjects();
+        return;
+    });
 
+
+    // not sure if flag still needed
+    if (flag) {
+        outputrow.appendChild(tr);
+        tbody[0].appendChild(tr);
+    }
+
+    flag = 1;
     return;
 }
 
-function printProject(project){
-    for(todo in project.getTodos()){
-        printTodo(project.getTodos()[todo]);
+function printProject(project) {
+    for (todo in project.getTodos()) {
+        printTodo(project.getTodos()[todo], project);
     }
     return;
 }
 
+// add styling later
 function printAllProjects() {
-    for(let index in allProjects.getProjects()){
+    for (let index in allProjects.getProjects()) {
+        // project divider
+
+
+        let trs = document.getElementsByTagName('tr');
+        let dividerRow = document.createElement('tr');
+
+        let divider = document.createElement('td');
+        divider.textContent = 'project title: ' + allProjects.getProjects()[index].title();
+
+        let deleteProjectButton = document.createElement('button');
+
+
+        dividerRow.appendChild(divider);
+
+        deleteProjectButton.textContent = 'delete project';
+        deleteProjectButton.addEventListener('click', function () {
+            allProjects.remove(allProjects.getProjects()[index]);
+            flag = 0;
+            clearTable();
+            // printTodo(data, project);
+            printAllProjects();
+            return;
+        });
+        dividerRow.appendChild(deleteProjectButton);
+        // if array is empty, say that all todos are done / project is complete
+        trs[trs.length - 1].parentNode.appendChild(dividerRow);
+
+
         printProject(allProjects.getProjects()[index]);
+        //
+
+        // let trs = document.getElementsByTagName('tr');
+        // let divider = document.createElement('tr');
+        // divider.textContent = '___';
+        // trs[trs.length-1].parentNode.appendChild(divider);
+
+        // https://developer.mozilla.org/en-US/docs/Web/API/Element/prepend
+        // trs[trs.length-1].parentNode.prepend('___', document.createElement('tr'));
+
     }
     return;
 }
@@ -176,7 +248,7 @@ let displayProjs = document.getElementById('displayProjects');
 
 displayProjs.addEventListener('click', printAllProjects);
 
-function clearTable(){
+function clearTable() {
     let table = document.getElementsByTagName('tbody');
     table[0].remove();
 
