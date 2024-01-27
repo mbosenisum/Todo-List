@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <style>
         body {
@@ -17,10 +18,49 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
     <div class="content"></div>
     <button id="displayProjects">display all projects</button>
     <button id="clearDoc">clear</button>
+    <button id="addProjectButton">add project</button>
+
+    <!-- form for adding todo -->
+    <!-- hide by default -->
+    <form action="/my-handling-form-page" method="post">
+        <ul>
+            <li>
+                <label for="title">Title:</label>
+                <input type="text" id="todoTitle" name="user_name" />
+            </li>
+            <li>
+                <label for="mail">Email:</label>
+                <textarea id="todoDescription" name="user_email"></textarea>
+            </li>
+            <li>
+                <label for="todoDueDate">Due Date:</label>
+                <input type="date" id="todoDueDate" name="todoDueDate" />
+            </li>
+            <li>
+                Priority:
+                <input type="radio" id="priorityHigh" name="priority" value="high" />
+                <label for="priorityHigh">High</label>
+                <input type="radio" id="priorityMed" name="priority" value="medium" />
+                <label for="priorityMed">Medium</label>
+                <input type="radio" id="priorityLow" name="priority" value="low" />
+                <label for="priorityLow">Low</label>
+            </li>
+            <li>
+                <label for="notes">Notes:</label>
+                <textarea id="todoNotes" name="notes"></textarea>
+            </li>
+            <li>
+                <label for="checklist">Checklist:</label>
+                <input type="checkbox" id="todoChecklist" name="todoDueDate" />
+            </li>
+        </ul>
+    </form>
+
     <table id="output">
         <thead>
 
@@ -33,4 +73,5 @@
 
     <script src="todo.js"></script>
 </body>
+
 </html>

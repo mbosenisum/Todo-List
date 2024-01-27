@@ -1,6 +1,7 @@
 // https://www.theodinproject.com/lessons/node-path-javascript-factory-functions-and-the-module-pattern
 
 // current: 
+// create Todos
 // tie all functionality to DOM
 // DOM interactivity (add/remove buttons)
 // extra individual todos (within each project) after viewing all 
@@ -9,7 +10,7 @@
 // delete a todo / project
 // each project is grouped separately
 
-
+// need to add a form for user entering a project or todo, look back at old projects
 
 function Todo(title, description, dueDate, priority, notes, checklist) {
     this.title = title;
@@ -17,7 +18,7 @@ function Todo(title, description, dueDate, priority, notes, checklist) {
     this.dueDate = dueDate;
     this.priority = priority;
     this.notes = notes;
-    this.checklist = checklist;
+    this.checklist = checklist; // need to expand as array, which is later put into list
     return { title, description, dueDate, priority, notes, checklist }
 }
 
@@ -53,10 +54,11 @@ function projectGroup(newProject) {
 
     // untested
     const remove = (project) => {
+        project.removeAllTodos();
         let index = find(project);
         projectArr.splice(index, 1);
-
-        // need to remove accompanying Todos as well
+        delete project;
+        // remove from memory as well ?
     }
 
     return { add, display, find, remove, getProjects };
@@ -114,7 +116,18 @@ function Project(newTodo, titleName) {
         return;
     }
 
-    return { todos, addTodo, showTodos, removeTodo, findTodo, title, getTodos };
+    const removeAllTodos = () => {
+        todos = [];
+    }
+
+    const editTodo = (editedTodo) => {
+        let newName = prompt("change the name of this Todo", editedTodo.title.concat(' ' +  'edited'));
+        editedTodo.title = newName;
+        return;
+        // test in console
+    }
+
+    return { todos, addTodo, showTodos, removeTodo, findTodo, title, getTodos, removeAllTodos, editTodo };
 }
 
 
@@ -164,7 +177,14 @@ function printTodo(data, project) {
     }
 
     let flag = 1;
-    // deletes second groceries todo without being clicked
+
+    let editTodoButton = document.createElement('button');
+    editTodoButton.textContent = 'edit';
+    tr.appendChild(editTodoButton);
+    editTodoButton.addEventListener('click', function () {
+        project.editTodo(data);
+    });
+
     let deleteTodoButton = document.createElement('button');
     deleteTodoButton.textContent = 'delete';
     tr.appendChild(deleteTodoButton);
@@ -267,3 +287,13 @@ function clearTable() {
 let clearDoc = document.getElementById('clearDoc');
 
 clearDoc.addEventListener('click', clearTable);
+
+
+function addProject() {
+    //
+    console.log('add project button clicked');
+    return;
+}
+
+let addProjectBtn = document.getElementById('addProjectButton');
+addProjectBtn.addEventListener('click', addProject);
