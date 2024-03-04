@@ -10,9 +10,16 @@
 // delete a todo / project
 // each project is grouped separately
 
+// addproject via html/dom
+// adding checklist items (instead of setting through radio)
+
 // need to add a form for user entering a project or todo, look back at old projects
 
+
+// 02/20/2024: working on form submission for adding Project/Todo
+
 function Todo(title, description, dueDate, priority, notes, checklist) {
+    // control or reshape data as it comes in, form validation
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
@@ -34,6 +41,10 @@ function projectGroup(newProject) {
         return projectArr;
     }
 
+    // const returnProject = (index) => {
+    //     return projectArr[index];
+    // }
+
     // change later
     const display = () => {
         for (let index in projectArr) {
@@ -45,9 +56,16 @@ function projectGroup(newProject) {
     }
 
     const find = (project) => {
-        for (let index in projectArr) {
+        // why does it need to be keys() here (?)
+        console.log('keys = ', projectArr.keys());
+        for (let index in projectArr.keys()) {
+
+            // console.log(projectArr[index].title(), ' == ', project);
             if (projectArr[index].title() == project) {
                 return index;
+            }
+            else {
+                return -1;
             }
         }
     }
@@ -121,7 +139,7 @@ function Project(newTodo, titleName) {
     }
 
     const editTodo = (editedTodo) => {
-        let newName = prompt("change the name of this Todo", editedTodo.title.concat(' ' +  'edited'));
+        let newName = prompt("change the name of this Todo", editedTodo.title.concat(' ' + 'edited'));
         editedTodo.title = newName;
         return;
         // test in console
@@ -297,3 +315,52 @@ function addProject() {
 
 let addProjectBtn = document.getElementById('addProjectButton');
 addProjectBtn.addEventListener('click', addProject);
+
+// needs title, description, dueDate, priority, notes, checklist
+$(function () {
+    $('#addProjectForm').on("submit", function (e) {
+        e.preventDefault();
+        //   var formData = $(this).serialize();
+        var fD = $(this).serializeArray();
+
+        console.log(fD);
+
+        //   for(let key of fD.keys()){
+        //     console.log(fD[key].value);
+        //   };
+
+        let pTitle = fD[0].value;
+        //   console.log('pTitle = ', pTitle);
+        let tempTodo = Todo(
+            fD[1].val,
+            fD[2].val,
+            fD[3].val,
+            fD[4].val,
+            fD[5].val,
+            fD[6].val,
+        );
+
+        // still not adding to existing project
+        let index = allProjects.find(pTitle);
+        if (index != -1) {
+            console.log(allProjects[index]);
+            console.log('found project');
+
+            // need link to the project itself
+            console.log(allProjects[index]);
+            allProjects[index].addTodo(tempTodo);
+        }
+
+        else {
+            allProjects.add(Project(tempTodo, pTitle));
+        }
+
+        console.log('updated project list');
+        console.log(allProjects.display());
+        // clear tempTodo memory
+
+
+    });
+});
+
+

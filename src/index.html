@@ -16,7 +16,11 @@
     </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Todo-List</title>
+
+    <!-- replace/inline later -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -27,15 +31,26 @@
 
     <!-- form for adding todo -->
     <!-- hide by default -->
-    <form action="/my-handling-form-page" method="post">
+
+    <!-- https://www.infoworld.com/article/2077176/using-javascript-and-forms.html -->
+    <!-- match label for with input name -->
+    <form id="addProjectForm">
         <ul>
+            <!-- use input text field for Project name, either add Todo to existing or create -->
             <li>
-                <label for="title">Title:</label>
-                <input type="text" id="todoTitle" name="user_name" />
+                <label for="projectName">Project Name:</label>
+                <input type="text" id="projectName" name="projectName" />
             </li>
             <li>
-                <label for="mail">Email:</label>
-                <textarea id="todoDescription" name="user_email"></textarea>
+                <div>__</div>
+            </li>
+            <li>
+                <label for="todoTitle">Todo Title:</label>
+                <input type="text" id="todoTitle" name="todoTitle" />
+            </li>
+            <li>
+                <label for="todoDescription">Email:</label>
+                <textarea id="todoDescription" name="todoDescription"></textarea>
             </li>
             <li>
                 <label for="todoDueDate">Due Date:</label>
@@ -55,8 +70,12 @@
                 <textarea id="todoNotes" name="notes"></textarea>
             </li>
             <li>
-                <label for="checklist">Checklist:</label>
-                <input type="checkbox" id="todoChecklist" name="todoDueDate" />
+                <label for="todoChecklist">Checklist:</label>
+                <!-- change so it (dynamically?) adds checkboxes -->
+                <input type="checkbox" id="todoChecklist" name="todoChecklist" />
+            </li>
+            <li>
+                <input type="submit" value="Add Project" />
             </li>
         </ul>
     </form>
