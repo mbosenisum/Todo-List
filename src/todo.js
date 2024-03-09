@@ -17,6 +17,8 @@
 
 
 // 02/20/2024: working on form submission for adding Project/Todo
+// 03/07/2024: adding project title with form submissions from html
+//      using allProjects.display(). search function not working?
 
 function Todo(title, description, dueDate, priority, notes, checklist) {
     // control or reshape data as it comes in, form validation
@@ -49,19 +51,45 @@ function projectGroup(newProject) {
     const display = () => {
         for (let index in projectArr) {
             console.log('project title = ' + projectArr[index].title());
-            console.log(projectArr[index]);
+            // console.log(projectArr[index]);
             // console.log(arr[index].showTodos());
         }
         // return arr;
     }
 
-    const find = (project) => {
-        // why does it need to be keys() here (?)
-        console.log('keys = ', projectArr.keys());
-        for (let index in projectArr.keys()) {
+    // this is just to find if the project exists 
+    // separate functionality of returning index for search
+    // and for using it to add/amend an existing project
+    const find = (project, todo) => {
+        // console.log('project =');
+        // console.log(project);   // the actual project itself, presumably matching if everything identical
 
+        // if there exists a project with the same title already, add Todo to existing project
+        // or prompt?
+
+
+        // simply returning index
+
+        // why does it need to be keys() here (?)
+        // console.log('keys = ', projectArr.keys());
+        // adding new Project to array
+        console.log(projectArr);
+        for (let index in projectArr) {
+            console.log(projectArr[index].title());
             // console.log(projectArr[index].title(), ' == ', project);
-            if (projectArr[index].title() == project) {
+
+            // if there exists a project with the same title already, add Todo to existing project
+            // or prompt?
+            if (projectArr[index].title() == project.title()) {
+                if (todo == null) {
+                    prompt("There exists a project, adding todo to existing project ");
+                    projectArr[index].addTodo(todo);
+                }
+                return index;
+            }
+            else if (projectArr[index] == project) {
+                console.log("This exact project and todos already exist");
+                console.log("not adding");
                 return index;
             }
             else {
@@ -69,6 +97,16 @@ function projectGroup(newProject) {
             }
         }
     }
+
+    // const findTitle = (pTitle) => {
+    //     for(let index in projectArr){
+    //         if(projectArr[index].title()==pTitle){
+    //             console.log('findTitle: there exists a project with this title');
+    //             return index;
+    //         }
+    //     }
+    //     return -1;
+    // }
 
     // untested
     const remove = (project) => {
@@ -330,7 +368,14 @@ $(function () {
         //   };
 
         let pTitle = fD[0].value;
+        if(pTitle==""){
+            console.log('please enter a title');
+            // return;
+        }
         //   console.log('pTitle = ', pTitle);
+
+        // should be adding a project instead?
+        // project name, todo title, email, due date, priority, notes, checklist
         let tempTodo = Todo(
             fD[1].val,
             fD[2].val,
@@ -340,14 +385,15 @@ $(function () {
             fD[6].val,
         );
 
+        let tempProject = Project(tempTodo , pTitle);
+
         // still not adding to existing project
-        let index = allProjects.find(pTitle);
+        let index = allProjects.find(tempProject, tempTodo);
         if (index != -1) {
-            console.log(allProjects[index]);
             console.log('found project');
+            console.log(allProjects[index]);
 
             // need link to the project itself
-            console.log(allProjects[index]);
             allProjects[index].addTodo(tempTodo);
         }
 

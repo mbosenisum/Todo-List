@@ -34,6 +34,7 @@
 
     <!-- https://www.infoworld.com/article/2077176/using-javascript-and-forms.html -->
     <!-- match label for with input name -->
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required -->
     <form id="addProjectForm">
         <ul>
             <!-- use input text field for Project name, either add Todo to existing or create -->
@@ -46,7 +47,7 @@
             </li>
             <li>
                 <label for="todoTitle">Todo Title:</label>
-                <input type="text" id="todoTitle" name="todoTitle" />
+                <input type="text" id="todoTitle" name="todoTitle" required />
             </li>
             <li>
                 <label for="todoDescription">Email:</label>
@@ -54,7 +55,7 @@
             </li>
             <li>
                 <label for="todoDueDate">Due Date:</label>
-                <input type="date" id="todoDueDate" name="todoDueDate" />
+                <input type="date" id="todoDueDate" name="todoDueDate" required />
             </li>
             <li>
                 Priority: <br>
