@@ -55,6 +55,7 @@ function projectGroup(newProject) {
             // console.log(arr[index].showTodos());
         }
         // return arr;
+        return 0;
     }
 
     // this is just to find if the project exists 
@@ -81,9 +82,9 @@ function projectGroup(newProject) {
             // if there exists a project with the same title already, add Todo to existing project
             // or prompt?
             if (projectArr[index].title() == project.title()) {
-                if (todo == null) {
+                if (todo !== null) {
                     prompt("There exists a project, adding todo to existing project ");
-                    projectArr[index].addTodo(todo);
+                    // projectArr[index].addTodo(todo);
                 }
                 return index;
             }
@@ -96,6 +97,11 @@ function projectGroup(newProject) {
                 return -1;
             }
         }
+    }
+
+    const getProject = (index) => {
+        // console.log(projectArr[index]);
+        return projectArr[index];
     }
 
     // const findTitle = (pTitle) => {
@@ -117,13 +123,15 @@ function projectGroup(newProject) {
         // remove from memory as well ?
     }
 
-    return { add, display, find, remove, getProjects };
+    return { add, display, find, remove, getProject, getProjects };
 }
 
 let allProjects = projectGroup();
 
-function Project(newTodo, titleName) {
-    this.titleName = titleName;
+function Project(newTodo, titleName = '') {
+    if (titleName != '') {
+        this.titleName = titleName;
+    }
 
     const title = () => { return titleName; }
 
@@ -368,7 +376,7 @@ $(function () {
         //   };
 
         let pTitle = fD[0].value;
-        if(pTitle==""){
+        if (pTitle == "") {
             console.log('please enter a title');
             // return;
         }
@@ -377,32 +385,43 @@ $(function () {
         // should be adding a project instead?
         // project name, todo title, email, due date, priority, notes, checklist
         let tempTodo = Todo(
-            fD[1].val,
-            fD[2].val,
-            fD[3].val,
-            fD[4].val,
-            fD[5].val,
-            fD[6].val,
+            fD[1].value,
+            fD[2].value,
+            fD[3].value,
+            fD[4].value,
+            fD[5].value,
+            fD[6].value
         );
 
-        let tempProject = Project(tempTodo , pTitle);
+        // let tempTodo = Todo(
+        //     fD[1],
+        //     fD[2],
+        //     fD[3],
+        //     fD[4],
+        //     fD[5],
+        //     fD[6]
+        // );
 
-        // still not adding to existing project
+        console.log('tempTodo = ');
+        console.log(tempTodo);
+        let tempProject = Project(tempTodo, pTitle);
+
+        // adds twice, but works
         let index = allProjects.find(tempProject, tempTodo);
         if (index != -1) {
             console.log('found project');
-            console.log(allProjects[index]);
+            console.log(allProjects.getProject(index));
 
             // need link to the project itself
-            allProjects[index].addTodo(tempTodo);
+            allProjects.getProject(index).addTodo(tempTodo);
         }
 
         else {
-            allProjects.add(Project(tempTodo, pTitle));
+            allProjects.add(Project(tempProject));
         }
 
         console.log('updated project list');
-        console.log(allProjects.display());
+        console.log(allProjects.display()); 
         // clear tempTodo memory
 
 
