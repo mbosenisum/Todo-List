@@ -10,15 +10,18 @@
 // delete a todo / project
 // each project is grouped separately
 
-// addproject via html/dom
 // adding checklist items (instead of setting through radio)
 
-// need to add a form for user entering a project or todo, look back at old projects
+// editing Todos in "display all projects", change to text forms
 
 
-// 02/20/2024: working on form submission for adding Project/Todo
-// 03/07/2024: adding project title with form submissions from html
-//      using allProjects.display(). search function not working?
+// write checklist for all project capabilities as defined by both Odin Project and self
+
+
+// 04/01/2024: 
+// for display all projects in DOM, creating the todos in a nested tr to group projects together
+// for CSS and organization
+// possibly use grid instead
 
 function Todo(title, description, dueDate, priority, notes, checklist) {
     // control or reshape data as it comes in, form validation
@@ -43,10 +46,6 @@ function projectGroup(newProject) {
         return projectArr;
     }
 
-    // const returnProject = (index) => {
-    //     return projectArr[index];
-    // }
-
     // change later
     const display = () => {
         for (let index in projectArr) {
@@ -58,38 +57,21 @@ function projectGroup(newProject) {
         return 0;
     }
 
-    // this is just to find if the project exists 
-    // separate functionality of returning index for search
-    // and for using it to add/amend an existing project
-    const find = (project, todo) => {
-        // console.log('project =');
-        // console.log(project);   // the actual project itself, presumably matching if everything identical
-
-        // if there exists a project with the same title already, add Todo to existing project
-        // or prompt?
-
-
-        // simply returning index
-
-        // why does it need to be keys() here (?)
-        // console.log('keys = ', projectArr.keys());
-        // adding new Project to array
-        console.log(projectArr);
+    const find = (project, todo=null) => {
         for (let index in projectArr) {
-            console.log(projectArr[index].title());
-            // console.log(projectArr[index].title(), ' == ', project);
+            // console.log(projectArr[index].title());
 
-            // if there exists a project with the same title already, add Todo to existing project
-            // or prompt?
             if (projectArr[index].title() == project.title()) {
+
+                // alert only happens when adding todo from DOM
                 if (todo !== null) {
-                    prompt("There exists a project, adding todo to existing project ");
-                    // projectArr[index].addTodo(todo);
+                    // prompt()
+                    alert("There exists a project, adding todo to existing project ");
                 }
                 return index;
             }
             else if (projectArr[index] == project) {
-                console.log("This exact project and todos already exist");
+                alert("This exact project and todos already exist");
                 console.log("not adding");
                 return index;
             }
@@ -100,19 +82,9 @@ function projectGroup(newProject) {
     }
 
     const getProject = (index) => {
-        // console.log(projectArr[index]);
         return projectArr[index];
     }
 
-    // const findTitle = (pTitle) => {
-    //     for(let index in projectArr){
-    //         if(projectArr[index].title()==pTitle){
-    //             console.log('findTitle: there exists a project with this title');
-    //             return index;
-    //         }
-    //     }
-    //     return -1;
-    // }
 
     // untested
     const remove = (project) => {
@@ -120,7 +92,6 @@ function projectGroup(newProject) {
         let index = find(project);
         projectArr.splice(index, 1);
         delete project;
-        // remove from memory as well ?
     }
 
     return { add, display, find, remove, getProject, getProjects };
@@ -189,6 +160,10 @@ function Project(newTodo, titleName = '') {
         editedTodo.title = newName;
         return;
         // test in console
+
+        // VV would need to do this in editTodoButton (line ~200)
+        // change so that it turns the row into editable text fields
+        // with existing data as default
     }
 
     return { todos, addTodo, showTodos, removeTodo, findTodo, title, getTodos, removeAllTodos, editTodo };
@@ -233,7 +208,10 @@ function printTodo(data, project) {
 
     let tr = document.createElement('tr');
 
+    // change to reflect new structure
     let outputrow = document.getElementById('outputrow');
+
+
     for (let index in data) {
         let td = document.createElement('td');
         td.textContent = data[index];
@@ -282,21 +260,19 @@ function printProject(project) {
 
 // add styling later
 function printAllProjects() {
+    //clear()
+    clearTable();
     for (let index in allProjects.getProjects()) {
         // project divider
 
+        // keep projects separate
 
         let trs = document.getElementsByTagName('tr');
         let dividerRow = document.createElement('tr');
-
         let divider = document.createElement('td');
         divider.textContent = 'project title: ' + allProjects.getProjects()[index].title();
-
         let deleteProjectButton = document.createElement('button');
-
-
         dividerRow.appendChild(divider);
-
         deleteProjectButton.textContent = 'delete project';
         deleteProjectButton.addEventListener('click', function () {
             allProjects.remove(allProjects.getProjects()[index]);
@@ -312,16 +288,13 @@ function printAllProjects() {
 
 
         printProject(allProjects.getProjects()[index]);
-        //
+       
 
-        // let trs = document.getElementsByTagName('tr');
-        // let divider = document.createElement('tr');
-        // divider.textContent = '___';
-        // trs[trs.length-1].parentNode.appendChild(divider);
-
-        // https://developer.mozilla.org/en-US/docs/Web/API/Element/prepend
-        // trs[trs.length-1].parentNode.prepend('___', document.createElement('tr'));
-
+        let projectTable = document.createElement('table');
+        // check syntax
+        projectTable.setAttribute('id', allProjects.getProjects()[index].title());  
+        projectTable.textContent = 'project title: ' + allProjects.getProjects()[index].title();
+        
     }
     return;
 }
@@ -352,38 +325,19 @@ let clearDoc = document.getElementById('clearDoc');
 
 clearDoc.addEventListener('click', clearTable);
 
-
-function addProject() {
-    //
-    console.log('add project button clicked');
-    return;
-}
-
-let addProjectBtn = document.getElementById('addProjectButton');
-addProjectBtn.addEventListener('click', addProject);
-
-// needs title, description, dueDate, priority, notes, checklist
+// DOM adding project / todo
 $(function () {
     $('#addProjectForm').on("submit", function (e) {
         e.preventDefault();
-        //   var formData = $(this).serialize();
         var fD = $(this).serializeArray();
 
         console.log(fD);
 
-        //   for(let key of fD.keys()){
-        //     console.log(fD[key].value);
-        //   };
-
         let pTitle = fD[0].value;
         if (pTitle == "") {
-            console.log('please enter a title');
-            // return;
+            prompt('please enter a title');
+            return;
         }
-        //   console.log('pTitle = ', pTitle);
-
-        // should be adding a project instead?
-        // project name, todo title, email, due date, priority, notes, checklist
         let tempTodo = Todo(
             fD[1].value,
             fD[2].value,
@@ -393,38 +347,23 @@ $(function () {
             fD[6].value
         );
 
-        // let tempTodo = Todo(
-        //     fD[1],
-        //     fD[2],
-        //     fD[3],
-        //     fD[4],
-        //     fD[5],
-        //     fD[6]
-        // );
-
         console.log('tempTodo = ');
         console.log(tempTodo);
         let tempProject = Project(tempTodo, pTitle);
 
-        // adds twice, but works
         let index = allProjects.find(tempProject, tempTodo);
         if (index != -1) {
             console.log('found project');
             console.log(allProjects.getProject(index));
-
-            // need link to the project itself
             allProjects.getProject(index).addTodo(tempTodo);
         }
 
         else {
-            allProjects.add(Project(tempProject));
+            allProjects.add(tempProject);
         }
 
         console.log('updated project list');
         console.log(allProjects.display()); 
-        // clear tempTodo memory
-
-
     });
 });
 

@@ -1,0 +1,36 @@
+body {
+    background-color: black;
+    color: white;
+}
+
+table#output {
+    border-radius: 2px;
+    border-style: dotted;
+    padding: 10px;
+}
+
+/* selector specificity overrides */
+/* table#output > *  */
+
+table > * {
+    /* border-radius: 4px;
+    border-style: dotted;
+    border-color: rgb(255, 255, 255);
+    padding: 10px; */
+
+    border-width: 4px;
+    border-style: dashed;
+    border-color: white;
+    color: rgb(255, 163, 163);
+}
+
+tbody > tr {
+    /* border-style: solid; */
+    /* border-width: 8px; */
+    /* border-color: white; */
+    /* margin: 16px; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}

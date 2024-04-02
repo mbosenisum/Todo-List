@@ -2,7 +2,8 @@
 <html lang="en">
 
 <head>
-    <style>
+    <link rel="stylesheet" href="style.css">
+    <!-- <style>
         body {
             background-color: black;
             color: white;
@@ -13,7 +14,7 @@
             border-width: 1px;
             border-style: dotted;
         } */
-    </style>
+    </style> -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Todo-List</title>
@@ -27,7 +28,6 @@
     <div class="content"></div>
     <button id="displayProjects">display all projects</button>
     <button id="clearDoc">clear</button>
-    <button id="addProjectButton">add project</button>
 
     <!-- form for adding todo -->
     <!-- hide by default -->
@@ -39,6 +39,7 @@
         <ul>
             <!-- use input text field for Project name, either add Todo to existing or create -->
             <li>
+                <!-- use dropdown menu or add new -->
                 <label for="projectName">Project Name:</label>
                 <input type="text" id="projectName" name="projectName" />
             </li>
